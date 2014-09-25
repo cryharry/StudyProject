@@ -1,0 +1,4 @@
+<%
+	String bc = "yellow";
+	String tb = "green";
+%>

@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<%
+	String num = request.getParameter("num"); // num파라미터
+%>
+숫자<%=num %>
 </body>
 </html>
