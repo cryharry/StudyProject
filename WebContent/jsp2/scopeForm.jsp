@@ -4,9 +4,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>ScopeForm</title>
 </head>
 <body>
-
+<%
+	/*
+		영역				영역객체			저장된 속성값 유효범위
+		page			pageContext		해당페이지
+		request			request			요청처리되는 동안
+		session			session			접속정보저장
+		application		application		웹애플리케이션 실행되는동안 
+	*/
+	
+	// 영역객체 값저장, 값가져오기, 값삭제
+	// 객체.setAttribute(이름,값)
+	// 객체.getAttribute(이름)
+	// 객체.removeAttribute(이름)
+%>
+<h1>scopeForm.jsp페이지</h1>
+<form action="scopePro.jsp" method="get">
+아이디:<input type="text" name="id"><br>
+<input type="submit" value="전송">
+</form>
 </body>
 </html>
