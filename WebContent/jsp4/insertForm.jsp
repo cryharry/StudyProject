@@ -37,12 +37,10 @@ function handler(id) {
 }
 // 아이디 입력시 아이디 입력값을 인자값으로 받아 동작하는 show()함수
 function show(id){
-	if(id.length > 3) {
-		AJAX.onreadystatechange = handler;
-		// 입력받은 아이디를 id 파라미터값으로 설정하여 idCheck.jsp 호출
-		AJAX.open("POST", "idCheck.jsp?id="+id, "true");
-		AJAX.send("");
-	}
+	AJAX.onreadystatechange = handler;
+	// 입력받은 아이디를 id 파라미터값으로 설정하여 idCheck.jsp 호출
+	AJAX.open("POST", "idCheck.jsp?id="+id, "true");
+	AJAX.send("");
 }
 
 function onlyNum(event, type) {

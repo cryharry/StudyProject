@@ -37,12 +37,10 @@ function handler(id) {
 }
 // 아이디 입력시 아이디 입력값을 인자값으로 받아 동작하는 show()함수
 function show(id){
-	if(id.length > 3) {
-		AJAX.onreadystatechange = handler;
-		// 입력받은 아이디를 id 파라미터값으로 설정하여 idCheck.jsp 호출
-		AJAX.open("POST", "idCheck.jsp?id="+id, "true");
-		AJAX.send("");
-	}
+	AJAX.onreadystatechange = handler;
+	// 입력받은 아이디를 id 파라미터값으로 설정하여 idCheck.jsp 호출
+	AJAX.open("POST", "idCheck.jsp?id="+id, "true");
+	AJAX.send("");
 }
 
 function onlyNum(event, type) {
@@ -55,44 +53,10 @@ function onlyNum_han(obj) {
 	if(event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 37 || event.keyCode == 38  || event.keyCode == 39 || event.keyCode == 40) return;
 	obj.value = obj.value.replace(/[ㄱ-ㅎㅏ-ㅣ가-힣]/g,'');
 }
-
-function check_page() {
-	var id = $('#id').val();
-	// 아이디체크
-	if(id=="") {
-		alert("아이디를 입력하세요");
-		id.focus();
-		return false;
-	}
-	if(id.length<4 || id.length>10) { //4~7길이
-		alert("아이디는 4~10자리입니다.정확히 입력하세요");
-		id.value=""
-		id.focus();
-		return false;
-	}
-	/* // 이름체크
-	if(document.fr.name.value=="") {
-		alert("이름을 입력하세요");
-		document.fr.name.focus();
-		return false;
-	}
-	// 비밀번호체크
-	if(document.fr.passwd.value=="") {
-		alert("비밀번호를 입력하세요");
-		document.fr.passwd.focus();
-		return false;
-	}
-	// 성별체크
-	if(document.fr.gender[0].checked==false && document.fr.gender[1].checked==false) {
-		alert("성별을 체크하세요");
-		document.fr.gender(0).focus();
-		return false;
-	} */ 
-}
 </script>
 </head>
 <body>
-<form action="insertPro.jsp" method="post" onsubmit="return check_page()" name="frm">
+<form action="insertPro.jsp" method="post" name="frm">
 아이디:<input type="text" name="id" onkeyup="show(this.value);" id="id"><span id="ajax"></span><br>
 비밀번호:<input type="password" name="passwd" id="passwd"><br>
 이름:<input type="text" name="name" id="name"><br>

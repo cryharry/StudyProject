@@ -17,9 +17,10 @@ public class MemberBean {
     private String id;
     private String passwd;
     private String name;
-    private int age;
     private Timestamp reg_date;
+    private int age;
     private String gender;
+    private String email;
 
     /**
      * @return the id
@@ -125,6 +126,4 @@ public class MemberBean {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    private String email;
 }

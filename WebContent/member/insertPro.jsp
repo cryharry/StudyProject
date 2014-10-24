@@ -1,3 +1,4 @@
+<%@page import="member.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, member.MemberBean" %>
@@ -17,5 +18,7 @@
 	// 디비작업
 	// 파일만들기 패키지 member 파일이름 MemberDAO
 	// 객체생성 memberdao
+	MemberDAO memberdao = new MemberDAO();
 	// 디비(insert)작업처리 => 메서드호출 insertMember(memberbean);
+	memberdao.insertMember(memberbean);
 %>
