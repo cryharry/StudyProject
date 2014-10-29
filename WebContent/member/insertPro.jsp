@@ -21,4 +21,9 @@
 	MemberDAO memberdao = new MemberDAO();
 	// 디비(insert)작업처리 => 메서드호출 insertMember(memberbean);
 	memberdao.insertMember(memberbean);
+	// 이동 "회원가입성공" loginForm.jsp이동
 %>
+<script>
+	alert("회원가입성공");
+	location.href="loginForm.jsp";
+</script>

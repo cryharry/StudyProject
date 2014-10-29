@@ -24,7 +24,7 @@ function createXMLHttpRequest(){
 // 생성된 xml 개체를 AJAX라는 변수에 저장
 var AJAX = createXMLHttpRequest();
 
-function handler(id) {
+function handler() {
 	if(AJAX.readyState == 4 && AJAX.status == 200) {
 	    // AJAX success시 결과값 json이라는 변수에 저장
 	    var json = AJAX.responseText;
@@ -57,13 +57,13 @@ function onlyNum_han(obj) {
 </head>
 <body>
 <form action="insertPro.jsp" method="post" name="frm">
-아이디:<input type="text" name="id" onkeyup="show(this.value);" id="id"><span id="ajax"></span><br>
-비밀번호:<input type="password" name="passwd" id="passwd"><br>
-이름:<input type="text" name="name" id="name"><br>
-나이:<input type="text" name="age" id="age" onkeypress="return onlyNum(event, 'numbers');" onkeydown="return onlyNum_han(this);"><br>
-성별:남<input type="radio" name="gender" id="gender" value="남">
-     여<input type="radio" name="gender" id="gender" value="여"><br>
-이메일주소:<input type="text" name="email" id="email"><br>
+아이디:<input type="text" name="id" onkeyup="show(this.value);" id="txtId"><span id="ajax"></span><br>
+비밀번호:<input type="password" name="passwd" id="txtPasswd"><br>
+이름:<input type="text" name="name" id="txtName"><br>
+나이:<input type="text" name="age" id="txtAge" onkeypress="return onlyNum(event, 'numbers');" onkeydown="return onlyNum_han(this);"><br>
+성별:남<input type="radio" name="gender" id="txtGender" value="남">
+     여<input type="radio" name="gender" id="txtGender" value="여"><br>
+이메일주소:<input type="text" name="email" id="txtEmail"><br>
 <input type="submit" value="회원가입">
 </form>
 </body>

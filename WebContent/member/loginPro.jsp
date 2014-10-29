@@ -1,3 +1,4 @@
+<%@page import="member.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, javax.sql.*, javax.naming.*" %>
@@ -7,53 +8,32 @@
 	// 파라미터 가져오기
 	String id = request.getParameter("id");
 	String passwd = request.getParameter("passwd");
-	
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	
-	try {
-	    Context initCtx = new InitialContext();
-	    DataSource ds = (DataSource)initCtx.lookup("java:comp/env/jdbc/jspbeginner");
-	    
-	    conn = ds.getConnection();
-	    String sql = "select passwd from member where id=?";
-	    pstmt = conn.prepareStatement(sql);
-	    pstmt.setString(1, id);
-	    
-	    rs = pstmt.executeQuery();
-	    if(rs.next()) {
-	        if(passwd.equals(rs.getString("passwd"))) {
-	            session.setAttribute("id", id);
-	            //out.println("<script>alert('로그인 성공!')</script>");
-	            //out.println("로그인 인증");
-	            response.sendRedirect("main.jsp");
-		    } else {
-		        //out.println("비밀번호틀림");
-		        %>
-		        <script>
-		        	alert("비밀번호틀림");
-		        	location.href="loginForm.jsp";
-		        </script>
-		        <%
-		    }
-	    } else {
-	        //out.println("<script>alert('아이디가 틀려요!');location.href='loginForm.jsp';</script>");
-	        %>
-	        <script>
-	        	alert("아이디가 틀려요!");
-	        	location.href="loginForm.jsp";
-	        </script>
-	        <%
-	    }
-	        
-	    out.flush();
-	} catch(Exception e) {
-	    out.println(e.toString());
-	    out.flush();
-	} finally {
-	    if(rs!= null) try{rs.close();}catch(Exception e){}
-	    if(pstmt!= null) try{pstmt.close();}catch(Exception e){}
-	    if(conn!= null) try{conn.close();}catch(Exception e){}
+	// 디비연결
+	// MemberDAO 객체 생성 memberdao
+	MemberDAO memberdao = new MemberDAO();
+	// int check =  메서드 호출 userCheck(id, passwd);
+	int check = memberdao.userCheck(id, passwd);
+	// check == 1 세션값생성 "id" main.jsp이동
+	if(check == 1) {
+	    session.setAttribute("id", id);
+	    response.sendRedirect("main.jsp");
+	}
+	// check == 0 "비밀번호틀림" 뒤로이동
+	else if(check == 0) {
+	    %>
+	    <script>
+	    	alert("비밀번호틀림");
+	    	history.back();
+	    </script>
+	    <%
+	}
+	// check == -1 "아이디없음" 뒤로이동
+	else {
+	    %>
+	    <script>
+	    	alert("아이디없음");
+	    	history.back();
+	    </script>
+	    <%
 	}
 %>

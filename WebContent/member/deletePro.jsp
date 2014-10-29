@@ -1,3 +1,4 @@
+<%@page import="member.MemberDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, javax.sql.*, javax.naming.*" %>
@@ -12,49 +13,37 @@
 	// 파라미터 가져오기
 	String passwd = request.getParameter("passwd");
 	
-	Connection conn = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	String sql = "";
-	
-	try {
-	    Context initCtx = new InitialContext();
-	    DataSource ds = (DataSource)initCtx.lookup("java:comp/env/jdbc/jspbeginner");
-	    
-	    conn = ds.getConnection();
-	    sql  = "SELECT passwd FROM MEMBER WHERE id = ?";
-	    pstmt = conn.prepareStatement(sql);
-	    pstmt.setString(1, id);
-	    
-	    rs = pstmt.executeQuery();
-	    if(rs.next()) {
-	        if(passwd.equals(rs.getString("passwd"))) {
-	            sql = "DELETE FROM MEMBER WHERE id = ?";
-	            pstmt = conn.prepareStatement(sql);
-	            pstmt.setString(1, id);
-	            
-	            pstmt.executeUpdate();
-	            session.invalidate();
-	            %>
-	            <script>
-	            	alert("삭제성공");
-	            	location.href="loginForm.jsp";
-	            </script>
-	            <%
-	        } else {
-	            // "비밀번호 틀림" 뒤로이동
-	            %>
-	            <script>
-	            	alert("비밀번호틀림");
-	            	history.back();
-	            </script>
-	            <%
-	        }
-	    }
-	} catch(Exception e) {
-	    e.printStackTrace();
-	} finally {
-	    if(pstmt!=null) pstmt.close();
-	    if(conn!=null) conn.close();
+	// 디비연결
+	// 디비객체 생성 memberDAO
+	MemberDAO memberDAO = new MemberDAO();
+	// int check <= 메서드호출 deleteMember(id, passwd)
+	int check = memberDAO.deleteMember(id, passwd);
+	// check==1 세션값초기화 "삭제성공" loginForm.jsp이동
+	if(check==1) {
+	    session.invalidate();
+	    %>
+	    <script>
+	    	alert("삭제성공");
+	    	location.href="loginForm.jsp"
+	    </script>
+	    <%
+	}
+	// check==0 "비밀번호틀림" 뒤로이동
+	else if(check==0) {
+	    %>
+    	<script>
+    		alert("비밀번호틀림");
+    		history.back();
+    	</script>
+    	<%
+	}
+	// check==-1 "아이디없음" 뒤로이동
+	else {
+		%>
+    	<script>
+    		alert("아이디없음");
+    		history.back();
+    	</script>
+    	<%
 	}
 %>

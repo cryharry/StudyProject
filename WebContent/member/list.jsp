@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*, javax.sql.*, javax.naming.*" %>
+<%@page import="java.util.*" %>
+<%@page import="member.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,6 +17,14 @@
 	if(id==null || !id.equals("admin")) {
 	    response.sendRedirect("main.jsp");
 	}
+	// 디비객체 생성
+	MemberDAO memberDAO = new MemberDAO();
+	// List memberlist = 메서드 호출 getMembers()
+	List memberlist = memberDAO.getMembers();
+	MemberBean memberBean[] = new MemberBean[memberlist.size()];
+	for(int i=0; i<memberlist.size(); i++) {
+		memberBean[i] = (MemberBean)memberlist.get(i);
+	}
 %>
 <h1>회원목록</h1>
 <table border="1">
@@ -27,41 +37,17 @@
 		<td>성별</td>
 		<td>이메일</td>
 	</tr>
-	<%
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		String sql = "";
-		try {
-			// 디비 연결
-			Context initCtx = new InitialContext();
-			DataSource ds = (DataSource)initCtx.lookup("java:comp/env/jdbc/jspbeginner");
-			
-			conn = ds.getConnection();
-			stmt = conn.createStatement();
-			sql = "SELECT * FROM MEMBER";
-			rs = stmt.executeQuery(sql);
-			while(rs.next()) {
-				%>
-				<tr>
-					<td><%=rs.getString("id") %></td>
-					<td><%=rs.getString("passwd") %></td>
-					<td><%=rs.getString("name") %></td>
-					<td><%=rs.getTimestamp("reg_date") %></td>
-					<td><%=rs.getInt("age") %></td>
-					<td><%=rs.getString("gender") %></td>
-					<td><%=rs.getString("email") %></td>
-				</tr>
-				<%
-			}
-		}catch(Exception e){
-		    out.println(e.toString());
-		} finally {
-		    if(rs!= null) rs.close();
-		    if(stmt!= null) stmt.close();
-		    if(conn!= null) conn.close();
-		}
-	%>
+	<%for(int i=0; i<memberBean.length; i++)  {%>
+	<tr>
+		<td><%=memberBean[i].getId()%></td>
+		<td><%=memberBean[i].getPasswd()%></td>
+		<td><%=memberBean[i].getName()%></td>
+		<td><%=memberBean[i].getReg_date()%></td>
+		<td><%=memberBean[i].getAge()%></td>
+		<td><%=memberBean[i].getGender()%></td>
+		<td><%=memberBean[i].getEmail()%></td>
+	</tr>
+	<%} %>
 </table>
 </body>
 </html>
